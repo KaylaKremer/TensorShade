@@ -1,0 +1,43 @@
+{
+  "name": "tensormakeup",
+  "version": "1.0.0",
+  "description": "A machine learning Tensorflow React app that best matches foundation shades from various brands to your skin's color",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html",
+    "watch": "parcel watch index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaylaKremer/TensorMakeup.git"
+  },
+  "author": "Kayla Kremer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KaylaKremer/TensorMakeup/issues"
+  },
+  "homepage": "https://github.com/KaylaKremer/TensorMakeup#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "parcel-bundler": "^1.12.3",
+    "sass": "^1.21.0"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^1.1.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "keywords": [
+    "Tensorflow",
+    "React",
+    "Parcel",
+    "machine",
+    "learning",
+    "ML",
+    "AI"
+  ]
+}
