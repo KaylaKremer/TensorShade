@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import shades from '../data/shades.json';
 
 class FoundationShades extends Component {
 
@@ -7,6 +8,8 @@ class FoundationShades extends Component {
   }
 
   render() {
+    const shadesData = shades;
+    console.log(shadesData[0]);
     return (
       <div>
         <h3>Foundation Shades</h3>
