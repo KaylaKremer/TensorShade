@@ -9,7 +9,7 @@ class FoundationShades extends Component {
     super(props);
     
     this.state = ({
-      loading: true
+      loading: false
     });
   }
   
@@ -27,7 +27,7 @@ class FoundationShades extends Component {
     } : null;
   }
   
-  async setup() {
+  setup = async () => {
     // Create list of foundation brand and product from the imported shadesData and remove any duplicates
     const foundationList = shadesData
       .map(shade => `${shade.brand} - ${shade.product}`)
@@ -129,16 +129,16 @@ class FoundationShades extends Component {
         }
       }
     }).then(results => console.log(results.history.loss));
-  }
+  };
 
   // Render output
   render() {
     const {loading} = this.state;
-    this.setup();
     return (
       <div>
         <div className="subheading">
-          <h3>{loading ? 'Loading...' : 'Loading Finished'}</h3>
+          <div className="button" onClick={this.setup}>Click to Train Model</div>
+          <h3>{loading ? 'Loading...' : ''}</h3>
         </div>
         <div className={`loader ${!loading && 'hide'}`}>
           <div className="inner one"></div>

@@ -17,6 +17,13 @@ html {
     margin-top: 1rem;
   }
   
+  .button {
+    padding: 2rem;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+  }
+  
   body {
     background-image: radial-gradient(circle farthest-corner at center, rgb(183, 123, 235) 0%, rgb(228, 56, 237) 100%);
   }
