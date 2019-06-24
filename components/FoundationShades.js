@@ -7,6 +7,10 @@ class FoundationShades extends Component {
 
   constructor(props) {
     super(props);
+    
+    this.state = ({
+      loading: true
+    });
   }
   
   //Converts hexadecimal values to RGB color values
@@ -23,7 +27,7 @@ class FoundationShades extends Component {
     } : null;
   }
   
-  setup() {
+  async setup() {
     // Create list of foundation brand and product from the imported shadesData and remove any duplicates
     const foundationList = shadesData
       .map(shade => `${shade.brand} - ${shade.product}`)
@@ -76,7 +80,7 @@ class FoundationShades extends Component {
     // activation: Sigmoid function squashes the resulting values to be between a range of 0 to 1, which is best for a probability distribution.
     const hiddenLayer = tf.layers.dense({
       units: 20,
-      inputDim: 3,
+      inputShape: [3],
       activation: 'sigmoid'
     });
     
@@ -107,19 +111,46 @@ class FoundationShades extends Component {
     // epochs: Number of iterations
     // shuffle: Shuffles data at each epoch so it's not in the same order
     // validationSplit: Saves some of the training data to be used as validation data (0.1 = 10%)
-    model.fit(inputs, outputs, {
+    const history = await model.fit(inputs, outputs, {
       epochs: 10,
       shuffle: true,
       validationSplit: 0.1,
-    }).then(results => console.log(results.history.loss));
+      callbacks: {
+        // onTrainBegin: () => {
+        //   this.setState({
+        //     loading: true
+        //   })
+        // },
+        onTrainEnd: () => {
+          
+          this.setState({
+            loading: false
+        })
+        },
+        onEpochEnd: async (num, logs) => {
+          await tf.nextFrame();
+          await console.log(`Epoch ${num}`);
+          await console.log(`Logs ${logs.loss}`);
+        }
+      }
+    });
+    console.log(history.history.loss);
   }
 
   // Render output
   render() {
+    const {loading} = this.state;
     this.setup();
     return (
       <div>
-        <h3>Foundation Shades</h3>
+        <div className="subheading">
+          <h3>{loading ? 'Loading...' : 'Loading Finished'}</h3>
+        </div>
+        <div className={`loader ${!loading && 'hide'}`}>
+          <div className="inner one"></div>
+          <div className="inner two"></div>
+          <div className="inner three"></div>
+        </div>
       </div>
     );
   }

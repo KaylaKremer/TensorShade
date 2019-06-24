@@ -11,7 +11,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="heading">
         <h1>TensorMakeup</h1>
         <FoundationShades />
       </div>
