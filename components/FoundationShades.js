@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import shadesData from '../data/shades.json';
 import * as tf from '@tensorflow/tfjs';
+import "babel-polyfill";
 
 class FoundationShades extends Component {
 
@@ -58,10 +59,6 @@ class FoundationShades extends Component {
       shadeColors.push(shadeColor);
     }
     
-    console.log('foundationList', foundationList);
-    console.log('foundations', foundations);
-    console.log('shadeColors', shadeColors);
-    
     // Create a 2D tensor out of the shadeColors array
     // This tensor will act as the inputs to train the model with
     const inputs = tf.tensor2d(shadeColors);
@@ -78,8 +75,8 @@ class FoundationShades extends Component {
     // inputShape: How many input values (3 because there are 3 RGB values for each shade color)
     // activation: Sigmoid function squashes the resulting values to be between a range of 0 to 1, which is best for a probability distribution.
     const hiddenLayer = tf.layers.dense({
-      units: 16,
-      inputShape: [3],
+      units: 20,
+      inputDim: 3,
       activation: 'sigmoid'
     });
     
@@ -107,9 +104,15 @@ class FoundationShades extends Component {
       metrics: ['accuracy'],
     });
   
-    //train();
+    // epochs: Number of iterations
+    // shuffle: Shuffles data at each epoch so it's not in the same order
+    // validationSplit: Saves some of the training data to be used as validation data (0.1 = 10%)
+    model.fit(inputs, outputs, {
+      epochs: 10,
+      shuffle: true,
+      validationSplit: 0.1,
+    }).then(results => console.log(results.history.loss));
   }
-  
 
   // Render output
   render() {
