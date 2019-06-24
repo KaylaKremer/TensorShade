@@ -111,16 +111,11 @@ class FoundationShades extends Component {
     // epochs: Number of iterations
     // shuffle: Shuffles data at each epoch so it's not in the same order
     // validationSplit: Saves some of the training data to be used as validation data (0.1 = 10%)
-    const history = await model.fit(inputs, outputs, {
+    await model.fit(inputs, outputs, {
       epochs: 10,
       shuffle: true,
       validationSplit: 0.1,
       callbacks: {
-        // onTrainBegin: () => {
-        //   this.setState({
-        //     loading: true
-        //   })
-        // },
         onTrainEnd: () => {
           
           this.setState({
@@ -133,8 +128,7 @@ class FoundationShades extends Component {
           await console.log(`Logs ${logs.loss}`);
         }
       }
-    });
-    console.log(history.history.loss);
+    }).then(results => console.log(results.history.loss));
   }
 
   // Render output
