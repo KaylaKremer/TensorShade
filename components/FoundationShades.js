@@ -1,5 +1,6 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import shadesData from '../data/shades.json';
+import * as tf from '@tensorflow/tfjs';
 
 class FoundationShades extends Component {
 
@@ -39,7 +40,7 @@ class FoundationShades extends Component {
     const rgbList = hexList.map(hex => this.hexToRgb(hex));
     
     // Create empty array to hold the normalized shade RGB color values
-    let shades = [];
+    let shadeColors = [];
     
     // Create empty array to hold the foundation index values
     let foundations = [];
@@ -53,14 +54,60 @@ class FoundationShades extends Component {
     // Loop through each RGB color in rgbList. 
     // Normalize the RGB color dividing by 255 for each RGB value, store in an array, and then push that array into the shades array
     for (const rgbColor of rgbList) {
-      let shade = [rgbColor.r / 255, rgbColor.g / 255, rgbColor.b / 255];
-      shades.push(shade);
+      let shadeColor = [rgbColor.r / 255, rgbColor.g / 255, rgbColor.b / 255];
+      shadeColors.push(shadeColor);
     }
     
     console.log('foundationList', foundationList);
     console.log('foundations', foundations);
-    console.log('shades', shades);
+    console.log('shadeColors', shadeColors);
     
+    // Create a 2D tensor out of the shadeColors array
+    // This tensor will act as the inputs to train the model with
+    const inputs = tf.tensor2d(shadeColors);
+  
+    // Create a 1D tensor out of the foundations array
+    // Apply tf.oneHot to this tensor to create a tensor of 1 & 0 values out of the 39 possible foundation types.
+    const outputs = tf.oneHot(tf.tensor1d(foundations, 'int32'), 39).cast('float32');
+  
+    // Create a sequential model since the layers inside will go in order
+    const model = tf.sequential();
+    
+    // Create a hidden dense layer since all inputs will be connected to all nodes in the hidden layer.
+    // units: How many nodes in the layer
+    // inputShape: How many input values (3 because there are 3 RGB values for each shade color)
+    // activation: Sigmoid function squashes the resulting values to be between a range of 0 to 1, which is best for a probability distribution.
+    const hiddenLayer = tf.layers.dense({
+      units: 16,
+      inputShape: [3],
+      activation: 'sigmoid'
+    });
+    
+    // Create a dense output layer since all nodes from the hidden layer will be connected to the outputs
+    // units: Needs to be 39 since there are 39 possible makeup foundations
+    // inputShape does not need to be defined for output.
+    // activation: Softmax function acts like sigmoid except it also makes sure the resulting values add up to 1
+    const outputLayer = tf.layers.dense({
+      units: 39,
+      activation: 'softmax'
+    });
+    
+    // Add layers to the model
+    model.add(hiddenLayer);
+    model.add(outputLayer);
+    
+    // Create optimizer with stocastic gradient descent to minimize the loss with learning rate of 0.25
+    const optimizer = tf.train.sgd(0.25);
+  
+    // Compile the model with the optimizer created above to reduce the loss. 
+    // Use loss function of categoricalCrossentropy, which is best for comparing two probability distributions
+    model.compile({
+      optimizer: optimizer,
+      loss: 'categoricalCrossentropy',
+      metrics: ['accuracy'],
+    });
+  
+    //train();
   }
   
 
