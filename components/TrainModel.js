@@ -29,7 +29,7 @@ class TrainModel extends Component {
   };
   
   trainModel = async (evt) => {
-    evt.target.disabled = true;
+    //evt.target.disabled = true;
     this.setState({
       loading: true
     });
@@ -140,11 +140,11 @@ class TrainModel extends Component {
     const {loading} = this.state;
     return (
       <div className="train-model-container">
-        <a className="button" href="#" disabled={!loading} onClick={evt => this.trainModel(evt)}>
+        <a className={`train-model-button ${loading ? 'disabled' : ''}`} href="#" onClick={evt => this.trainModel(evt)}>
             {loading ? 'Loading...' : 'Click to Train Model'}
         </a>
         <div className="loader-container">
-          <div className={`loader ${!loading && 'hide'}`}>
+          <div className={`loader ${!loading ? 'hide' : ''}`}>
             <div className="inner one"></div>
             <div className="inner two"></div>
             <div className="inner three"></div>
