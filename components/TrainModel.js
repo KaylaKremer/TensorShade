@@ -141,8 +141,17 @@ class TrainModel extends Component {
     return (
       <div className="train-model-container">
         <a className={`train-model-button ${loading ? 'disabled' : ''}`} href="#" onClick={evt => this.trainModel(evt)}>
-            {loading ? 'Loading...' : 'Click to Train Model'}
+            {loading ? 'Loading...' : 'Train Model'}
         </a>
+        <div className="instructions">
+          <h6>Instructions</h6>
+          <ul className="instructions-list">
+            <li className="instructions-step" key="step-1">Click the Train Model button (This will take a few seconds!)</li>
+            <li className="instructions-step" key="step-2">Click camera icon to take a snapshot of your skin shade!</li>
+            <li className="instructions-step" key="step-3">Optionally, click the Upload button to upload your own picture of your skin</li>
+            <li className="instructions-step" key="step-4">Click the Run Skin Analysis button to get your matching foundation shade(s)!</li>
+          </ul>
+        </div>
         <div className="loader-container">
           <div className={`loader ${!loading ? 'hide' : ''}`}>
             <div className="inner one"></div>
