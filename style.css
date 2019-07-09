@@ -5,33 +5,66 @@ html {
   h1, h2, h3, h4, h5, h6 {
     color: #fff;
     font-family: 'Oswald', sans-serif;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
   }
   
   .heading {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
   }
   
-  .subheading {
-    margin-top: 1rem;
+  .train-model-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 50vh;
   }
   
   .button {
-    padding: 2rem;
-    background-color: #000;
+    width: 10rem;
+    height: 3rem;
     color: #fff;
+    background-color: #000;
     font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
   }
   
+  .button:hover {
+    text-decoration: underline;
+  }
+  
+  .button:disabled {
+    background-color: #999;
+    color: #ccc
+  }
+  .button:disabled:hover {
+    text-decoration: none;
+  }
+
   body {
     background-image: radial-gradient(circle farthest-corner at center, rgb(183, 123, 235) 0%, rgb(228, 56, 237) 100%);
   }
   
+  .loader-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+  }
+  
   .loader {
-    /* position: absolute;
-    top: calc(50% - 32px);
-    left: calc(50% - 32px); */
     width: 64px;
     height: 64px;
     border-radius: 50%;

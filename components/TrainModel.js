@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import shadesData from '../data/shades.json';
 import * as tf from '@tensorflow/tfjs';
 import "babel-polyfill";
+import "../scss/train-model.scss";
 
-class FoundationShades extends Component {
+class TrainModel extends Component {
 
   constructor(props) {
     super(props);
@@ -14,7 +15,7 @@ class FoundationShades extends Component {
   }
   
   //Converts hexadecimal values to RGB color values
-  hexToRgb(hex) {
+  hexToRgb = (hex) => {
     const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     const hexadecimal = hex.replace(shorthandRegex, (m, r, g, b) => {
       return r + r + g + g + b + b;
@@ -25,9 +26,13 @@ class FoundationShades extends Component {
       g: parseInt(result[2], 16),
       b: parseInt(result[3], 16)
     } : null;
-  }
+  };
   
-  setup = async () => {
+  trainModel = async (evt) => {
+    evt.target.disabled = true;
+    this.setState({
+      loading: true
+    });
     // Create list of foundation brand and product from the imported shadesData and remove any duplicates
     const foundationList = shadesData
       .map(shade => `${shade.brand} - ${shade.product}`)
@@ -116,38 +121,38 @@ class FoundationShades extends Component {
       shuffle: true,
       validationSplit: 0.1,
       callbacks: {
+        onEpochEnd: (num, logs) => {
+          tf.nextFrame();
+          console.log(`Epoch ${num}`);
+          console.log(`Logs ${logs.loss}`);
+        },
         onTrainEnd: () => {
-          
           this.setState({
             loading: false
-        })
-        },
-        onEpochEnd: async (num, logs) => {
-          await tf.nextFrame();
-          await console.log(`Epoch ${num}`);
-          await console.log(`Logs ${logs.loss}`);
+          });
         }
       }
-    }).then(results => console.log(results.history.loss));
+    }).then(results => console.log('results loss', results.history.loss));
   };
 
   // Render output
   render() {
     const {loading} = this.state;
     return (
-      <div>
-        <div className="subheading">
-          <div className="button" onClick={this.setup}>Click to Train Model</div>
-          <h3>{loading ? 'Loading...' : ''}</h3>
-        </div>
-        <div className={`loader ${!loading && 'hide'}`}>
-          <div className="inner one"></div>
-          <div className="inner two"></div>
-          <div className="inner three"></div>
+      <div className="train-model-container">
+        <a className="button" href="#" disabled={!loading} onClick={evt => this.trainModel(evt)}>
+            {loading ? 'Loading...' : 'Click to Train Model'}
+        </a>
+        <div className="loader-container">
+          <div className={`loader ${!loading && 'hide'}`}>
+            <div className="inner one"></div>
+            <div className="inner two"></div>
+            <div className="inner three"></div>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default FoundationShades;
+export default TrainModel;
