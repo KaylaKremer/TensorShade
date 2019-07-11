@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import TrainModel from './components/TrainModel';
+import Header from './components/Header';
 import "babel-polyfill";
 import "./scss/app.scss";
 
@@ -13,10 +14,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div className="heading">
-          <h1>TensorShade</h1>
-          <h1>✋🏻✋✋🏽✋🏿</h1>
-        </div>
+        <Header />
         <TrainModel />
       </div>
     );
