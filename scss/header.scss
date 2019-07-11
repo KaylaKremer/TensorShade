@@ -17,7 +17,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-top: 2rem;
+    margin: 1rem 0;
     width: 100%;
     .instructions-list {
         .instructions-step {
@@ -29,12 +29,12 @@
 }
 @keyframes rotation {
     0% {
-        transform: rotate(-3deg)
+        transform: rotate(-5deg)
     }
     50% {
-        transform: rotate(3deg);
+        transform: rotate(5deg);
     }
     100% {
-        transform: rotate(-3deg);
+        transform: rotate(-5deg);
     }
 }

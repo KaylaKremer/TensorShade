@@ -6,7 +6,9 @@ import "../scss/train-model.scss";
 
 class TrainModel extends Component {
   state = ({
-    loading: false
+    loading: false,
+    epoch: '',
+    loss: ''
   });
   
   //Converts hexadecimal values to RGB color values
@@ -117,10 +119,15 @@ class TrainModel extends Component {
       validationSplit: 0.1,
       callbacks: {
         onEpochEnd: (num, logs) => {
-          tf.nextFrame();
-          console.log(`Epoch ${num}`);
-          console.log(`Logs ${logs.loss}`);
+          //tf.nextFrame();
+          this.setState({
+            epoch: num + 1,
+            loss: logs.loss.toFixed(3)
+          })
+          //console.log(`Epoch ${num}`);
+          //console.log(`Logs ${logs.loss}`);
         },
+        onBatchEnd: tf.nextFrame,
         onTrainEnd: () => {
           this.setState({
             loading: false
@@ -132,18 +139,23 @@ class TrainModel extends Component {
 
   // Render output
   render() {
-    const {loading} = this.state;
+    const {loading, epoch, loss} = this.state;
     return (
-      <div className="train-model-container">
+      <div className="train-model">
         <a className={`train-model-button ${loading ? 'disabled' : ''}`} href="#" onClick={evt => this.trainModel(evt)}>
-            {loading ? 'Loading...' : 'Train Model'}
+          {loading ?
+            <div className="loader">
+              <div className="inner one"></div>
+              <div className="inner two"></div>
+              <div className="inner three"></div>
+            </div>
+          : 'Train Model'
+          }
         </a>
-        <div className="loader-container">
-          <div className={`loader ${!loading ? 'hide' : ''}`}>
-            <div className="inner one"></div>
-            <div className="inner two"></div>
-            <div className="inner three"></div>
-          </div>
+        <div className="results">
+          <h2>Training Results</h2>
+          <div className="epoch">Epoch: {epoch ? epoch : '0'}</div>
+          <div className="loss">Loss: {loss ? loss : '0.000'}</div>
         </div>
       </div>
     );
