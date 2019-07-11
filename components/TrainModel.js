@@ -31,7 +31,7 @@ class TrainModel extends Component {
       loading: true
     });
     // Create list of foundation brand and product from the imported shadesData and remove any duplicates
-    const foundationList = shadesData
+    const foundationLabels = shadesData
       .map(shade => `${shade.brand} - ${shade.product}`)
       .reduce((accumulator, currentShade) => {
         if (accumulator.indexOf(currentShade) === -1) {
@@ -53,9 +53,9 @@ class TrainModel extends Component {
     let foundations = [];
     
     // Loop through each foundation shade in shadesData. 
-    // Push its corresponding index value found in foundationList into the foundations array
+    // Push its corresponding index value found in foundationLabels into the foundations array
     for (const shade of shadesData) {
-      foundations.push(foundationList.indexOf(`${shade.brand} - ${shade.product}`));
+      foundations.push(foundationLabels.indexOf(`${shade.brand} - ${shade.product}`));
     }
     
     // Loop through each RGB color in rgbList. 
@@ -64,7 +64,7 @@ class TrainModel extends Component {
       let shadeColor = [rgbColor.r / 255, rgbColor.g / 255, rgbColor.b / 255];
       shadeColors.push(shadeColor);
     }
-    
+  
     // Create a 2D tensor out of the shadeColors array
     // This tensor will act as the inputs to train the model with
     const inputs = tf.tensor2d(shadeColors);
@@ -72,7 +72,7 @@ class TrainModel extends Component {
     // Create a 1D tensor out of the foundations array
     // Apply tf.oneHot to this tensor to create a tensor of 1 & 0 values out of the 39 possible foundation types.
     const outputs = tf.oneHot(tf.tensor1d(foundations, 'int32'), 39).cast('float32');
-  
+   
     // Create a sequential model since the layers inside will go in order
     const model = tf.sequential();
     
@@ -118,14 +118,11 @@ class TrainModel extends Component {
       shuffle: true,
       validationSplit: 0.1,
       callbacks: {
-        onEpochEnd: (num, logs) => {
-          //tf.nextFrame();
+        onEpochEnd: (cycle, logs) => {
           this.setState({
-            epoch: num + 1,
+            epoch: cycle + 1,
             loss: logs.loss.toFixed(3)
           })
-          //console.log(`Epoch ${num}`);
-          //console.log(`Logs ${logs.loss}`);
         },
         onBatchEnd: tf.nextFrame,
         onTrainEnd: () => {
@@ -137,7 +134,7 @@ class TrainModel extends Component {
     }).then(results => console.log('results loss', results.history.loss));
   };
 
-  // Render output
+  // Render training model results
   render() {
     const {loading, epoch, loss} = this.state;
     return (
