@@ -14,7 +14,6 @@ const Header = props => {
                 <h1 className="hand">✋🏿</h1>
             </div>
             <div className="instructions">
-                <h2>Instructions</h2>
                 <ul className="instructions-list">
                     <li className="instructions-step" key="step-1">👉🏻Click the Train Model button (This will take a few seconds!)</li>
                     <li className="instructions-step" key="step-2">👉Click camera icon to take a snapshot of your skin shade!</li>
