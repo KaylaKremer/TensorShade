@@ -7,8 +7,12 @@ import "../scss/train-model.scss";
 class TrainModel extends Component {
   state = ({
     loading: false,
-    epoch: '',
-    loss: ''
+    currentEpoch: 0,
+    lossResult: 0.000,
+    epoch: 10,
+    batchSize: 32,
+    units: 20,
+    learningRate: 0.25
   });
   
   //Converts hexadecimal values to RGB color values
@@ -25,7 +29,7 @@ class TrainModel extends Component {
     } : null;
   };
   
-  trainModel = async (evt) => {
+  trainModel = async () => {
     //evt.target.disabled = true;
     this.setState({
       loading: true
@@ -107,21 +111,22 @@ class TrainModel extends Component {
     model.compile({
       optimizer: optimizer,
       loss: 'categoricalCrossentropy',
-      metrics: ['accuracy'],
+      metrics: ['accuracy']
     });
   
+    // Create options object, which will be passed into the model when fitting the data
     // epochs: Number of iterations
     // shuffle: Shuffles data at each epoch so it's not in the same order
     // validationSplit: Saves some of the training data to be used as validation data (0.1 = 10%)
-    await model.fit(inputs, outputs, {
-      epochs: 10,
+    const options = {
+      epochs: 5,
       shuffle: true,
       validationSplit: 0.1,
       callbacks: {
-        onEpochEnd: (cycle, logs) => {
+        onEpochEnd: (epoch, logs) => {
           this.setState({
-            epoch: cycle + 1,
-            loss: logs.loss.toFixed(3)
+            currentEpoch: epoch + 1,
+            lossResult: logs.loss.toFixed(3)
           })
         },
         onBatchEnd: tf.nextFrame,
@@ -131,15 +136,32 @@ class TrainModel extends Component {
           });
         }
       }
-    }).then(results => console.log('results loss', results.history.loss));
+    };
+    
+    return await model.fit(inputs, outputs, options)
+    //.then(results => console.log('results loss', results.history.loss));
+    .then(results => console.log('results', results));
   };
+  
+  resetModel = (evt) => {
+    this.setState({
+      loading: false,
+      currentEpoch: 0,
+      lossResult: 0.000,
+      epoch: 10,
+      batchSize: 32,
+      units: 20,
+      learningRate: 0.25
+    });
+  }
 
   // Render training model results
   render() {
-    const {loading, epoch, loss} = this.state;
+    const {loading, currentEpoch, lossResult} = this.state;
     return (
-      <div className="train-model">
-        <a className={`train-model-button ${loading ? 'disabled' : ''}`} href="#" onClick={evt => this.trainModel(evt)}>
+    <div>
+      <div className="training-model">
+        <a className={`button ${loading ? 'disabled' : ''}`} href="#" onClick={() => this.trainModel()}>
           {loading ?
             <div className="loader">
               <div className="inner one"></div>
@@ -149,10 +171,14 @@ class TrainModel extends Component {
           : 'Train Model'
           }
         </a>
-        <div className="results">
+        <a className={`button ${loading ? 'disabled' : ''}`} href="#" onClick={(evt) => this.resetModel(evt)}>
+          Reset
+        </a>
+      </div>
+        <div className="training-results">
           <h2>Training Results</h2>
-          <div className="epoch">Epoch: {epoch ? epoch : '0'}</div>
-          <div className="loss">Loss: {loss ? loss : '0.000'}</div>
+          <div className="epoch"><span>Epoch:</span> <span>{currentEpoch}</span></div>
+          <div className="loss"><span>Loss:</span> <span>{lossResult}</span></div>
         </div>
       </div>
     );

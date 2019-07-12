@@ -1,9 +1,9 @@
-.train-model {
+.training-model {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 1rem 0;
-    .train-model-button {
+    .button {
         width: 10rem;
         height: 3rem;
         color: #fff;
@@ -14,6 +14,7 @@
         justify-content: center;
         padding: 1rem;
         text-decoration: none;
+        margin: 1rem;
         &:hover {
             text-decoration: underline;
             cursor: pointer;
@@ -57,12 +58,18 @@
             border-top: 3px solid #EFEFFA;
         }
     }
-    .results {
-        margin: 0 2em;
+}
+.training-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    .epoch,
+    .loss {
+        width: 8.5rem;
         display: flex;
-        flex-direction: column;
-        color: #fff;
-        font-family: 'Oswald', sans-serif;
+        justify-content: space-between;
     }
 }
 

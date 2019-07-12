@@ -19,6 +19,7 @@
     margin: 1rem 0;
     width: 100%;
     .instructions-list {
+        padding-inline-start: 0 !important;
         .instructions-step {
             list-style-type: none;
             color: #fff;
