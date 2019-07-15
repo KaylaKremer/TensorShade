@@ -1,3 +1,13 @@
+.training-inputs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .label {
+        color: #fff;
+        font-family: 'Oswald', sans-serif;
+    }
+}
+
 .training-model {
     display: flex;
     justify-content: center;

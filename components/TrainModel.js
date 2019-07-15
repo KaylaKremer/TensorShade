@@ -9,9 +9,9 @@ class TrainModel extends Component {
     loading: false,
     currentEpoch: 0,
     lossResult: 0.000,
-    epoch: 10,
-    batchSize: 32,
+    epochs: 10,
     units: 20,
+    batchSize: 32,
     learningRate: 0.25
   });
   
@@ -30,10 +30,12 @@ class TrainModel extends Component {
   };
   
   trainModel = async () => {
-    //evt.target.disabled = true;
     this.setState({
       loading: true
     });
+    // Get current values for epochs, units, batch size, and learning rate from state
+    const {epochs, units, batchSize, learningRate} = this.state;
+    
     // Create list of foundation brand and product from the imported shadesData and remove any duplicates
     const foundationLabels = shadesData
       .map(shade => `${shade.brand} - ${shade.product}`)
@@ -85,7 +87,7 @@ class TrainModel extends Component {
     // inputShape: How many input values (3 because there are 3 RGB values for each shade color)
     // activation: Sigmoid function squashes the resulting values to be between a range of 0 to 1, which is best for a probability distribution.
     const hiddenLayer = tf.layers.dense({
-      units: 20,
+      units: units,
       inputShape: [3],
       activation: 'sigmoid'
     });
@@ -104,7 +106,7 @@ class TrainModel extends Component {
     model.add(outputLayer);
     
     // Create optimizer with stocastic gradient descent to minimize the loss with learning rate of 0.25
-    const optimizer = tf.train.sgd(0.25);
+    const optimizer = tf.train.sgd(learningRate);
   
     // Compile the model with the optimizer created above to reduce the loss. 
     // Use loss function of categoricalCrossentropy, which is best for comparing two probability distributions
@@ -119,7 +121,8 @@ class TrainModel extends Component {
     // shuffle: Shuffles data at each epoch so it's not in the same order
     // validationSplit: Saves some of the training data to be used as validation data (0.1 = 10%)
     const options = {
-      epochs: 5,
+      epochs: epochs,
+      batchSize: batchSize,
       shuffle: true,
       validationSplit: 0.1,
       callbacks: {
@@ -134,32 +137,47 @@ class TrainModel extends Component {
           this.setState({
             loading: false
           });
-        }
+        },
       }
     };
     
     return await model.fit(inputs, outputs, options)
-    //.then(results => console.log('results loss', results.history.loss));
-    .then(results => console.log('results', results));
+    .then(results => console.log('results', results.history.loss));
   };
   
-  resetModel = (evt) => {
+  resetModel = () => {
     this.setState({
       loading: false,
       currentEpoch: 0,
       lossResult: 0.000,
-      epoch: 10,
+      epochs: 10,
       batchSize: 32,
       units: 20,
       learningRate: 0.25
     });
   }
+  
+  updateValues = evt => {
+    this.setState(
+    {[evt.target.name] : evt.target.value
+    });
+  };
 
   // Render training model results
   render() {
-    const {loading, currentEpoch, lossResult} = this.state;
+    const {loading, currentEpoch, lossResult, epochs, units, batchSize, learningRate} = this.state;
     return (
     <div>
+      <div className="training-inputs">
+          <label className="label" htmlFor="epochs">Epochs</label>
+          <input type="text" name="epochs" className="input" id="epochs" value={epochs} onChange={evt => this.updateValues(evt)}></input>
+          <label className="label" htmlFor="units">Units</label>
+          <input type="text" name="units" className="input" id="units" value={units} onChange={evt => this.updateValues(evt)}></input>
+          <label className="label" htmlFor="batch-size">Batch Size</label>
+          <input type="text" name="batch-size" className="input" id="batch-size" value={batchSize} onChange={evt => this.updateValues(evt)}></input>
+          <label className="label" htmlFor="learning-rate">Learning Rate</label>
+          <input type="text" name="learning-rate" className="input" id="learning-rate" value={learningRate} onChange={evt => this.updateValues(evt)}></input>
+        </div>
       <div className="training-model">
         <a className={`button ${loading ? 'disabled' : ''}`} href="#" onClick={() => this.trainModel()}>
           {loading ?
@@ -171,8 +189,15 @@ class TrainModel extends Component {
           : 'Train Model'
           }
         </a>
-        <a className={`button ${loading ? 'disabled' : ''}`} href="#" onClick={(evt) => this.resetModel(evt)}>
-          Reset
+        <a className={`button ${loading ? 'disabled' : ''}`} href="#" onClick={() => this.resetModel()}>
+        {loading ?
+            <div className="loader">
+              <div className="inner one"></div>
+              <div className="inner two"></div>
+              <div className="inner three"></div>
+            </div>
+          : 'Reset'
+          }
         </a>
       </div>
         <div className="training-results">
