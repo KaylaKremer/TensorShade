@@ -4,6 +4,9 @@ import * as tf from '@tensorflow/tfjs';
 import "babel-polyfill";
 import "../scss/train-model.scss";
 
+let model;
+let foundationLabels;
+
 class TrainModel extends Component {
   state = ({
     loading: false,
@@ -12,7 +15,8 @@ class TrainModel extends Component {
     epochs: 10,
     units: 20,
     batchSize: 32,
-    learningRate: 0.25
+    learningRate: 0.25,
+    foundation: ''
   });
   
   //Converts hexadecimal values to RGB color values
@@ -37,7 +41,7 @@ class TrainModel extends Component {
     const {epochs, units, batchSize, learningRate} = this.state;
     
     // Create list of foundation brand and product from the imported shadesData and remove any duplicates
-    const foundationLabels = shadesData
+    foundationLabels = shadesData
       .map(shade => `${shade.brand} - ${shade.product}`)
       .reduce((accumulator, currentShade) => {
         if (accumulator.indexOf(currentShade) === -1) {
@@ -80,7 +84,7 @@ class TrainModel extends Component {
     const outputs = tf.oneHot(tf.tensor1d(foundations, 'int32'), 39).cast('float32');
    
     // Create a sequential model since the layers inside will go in order
-    const model = tf.sequential();
+    model = tf.sequential();
     
     // Create a hidden dense layer since all inputs will be connected to all nodes in the hidden layer.
     // units: How many nodes in the layer
@@ -162,22 +166,48 @@ class TrainModel extends Component {
     {[evt.target.name] : evt.target.value
     });
   };
+  
+  predictModel = () => {
+    let r = 75;
+    let g = 20;
+    let b = 33;
+    tf.tidy(() => {
+      const input = tf.tensor2d([
+        [r / 255, g / 255, b / 255]
+      ]);
+      let results = model.predict(input);
+      let argMax = results.argMax(1);
+      let index = argMax.dataSync()[0];
+      let foundation = foundationLabels[index];
+      this.setState({
+        foundation
+      });
+    });
+  };
 
   // Render training model results
   render() {
-    const {loading, currentEpoch, lossResult, epochs, units, batchSize, learningRate} = this.state;
+    const {loading, currentEpoch, lossResult, epochs, units, batchSize, learningRate, foundation} = this.state;
     return (
     <div>
       <div className="training-inputs">
+        <div className="input-container">
           <label className="label" htmlFor="epochs">Epochs</label>
           <input type="text" name="epochs" className="input" id="epochs" value={epochs} onChange={evt => this.updateValues(evt)}></input>
+        </div>
+        <div className="input-container">
           <label className="label" htmlFor="units">Units</label>
           <input type="text" name="units" className="input" id="units" value={units} onChange={evt => this.updateValues(evt)}></input>
+        </div>
+        <div className="input-container">
           <label className="label" htmlFor="batch-size">Batch Size</label>
           <input type="text" name="batch-size" className="input" id="batch-size" value={batchSize} onChange={evt => this.updateValues(evt)}></input>
+        </div>
+        <div className="input-container">
           <label className="label" htmlFor="learning-rate">Learning Rate</label>
           <input type="text" name="learning-rate" className="input" id="learning-rate" value={learningRate} onChange={evt => this.updateValues(evt)}></input>
         </div>
+      </div>
       <div className="training-model">
         <a className={`button ${loading ? 'disabled' : ''}`} href="#" onClick={() => this.trainModel()}>
           {loading ?
@@ -204,6 +234,19 @@ class TrainModel extends Component {
           <h2>Training Results</h2>
           <div className="epoch"><span>Epoch:</span> <span>{currentEpoch}</span></div>
           <div className="loss"><span>Loss:</span> <span>{lossResult}</span></div>
+        </div>
+        <div className="predict-model">
+          <a className={`button ${loading ? 'disabled' : ''}`} href="#" onClick={() => this.predictModel()}>
+            {loading ?
+              <div className="loader">
+                <div className="inner one"></div>
+                <div className="inner two"></div>
+                <div className="inner three"></div>
+              </div>
+            : 'Predict Model'
+            }
+          </a>
+          <div className="prediction-results"><span>Foundation Match:</span><span>{foundation}</span></div>
         </div>
       </div>
     );

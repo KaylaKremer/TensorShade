@@ -2,9 +2,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    .label {
-        color: #fff;
-        font-family: 'Oswald', sans-serif;
+    margin: 1rem 0;
+    .input-container {
+        display: flex;
+        flex-flow: column;
+        justify-content: flex-start;
+        margin: 0 1rem;
+        .label {
+            color: #fff;
+            font-family: 'Oswald', sans-serif;
+        }
     }
 }
 
