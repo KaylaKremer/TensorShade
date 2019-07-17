@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import shadesData from '../data/shades.json';
 import * as tf from '@tensorflow/tfjs';
-import "babel-polyfill";
+import Upload from './Upload';
 import "../scss/train-model.scss";
 
 let model;
@@ -91,7 +91,7 @@ class TrainModel extends Component {
     // inputShape: How many input values (3 because there are 3 RGB values for each shade color)
     // activation: Sigmoid function squashes the resulting values to be between a range of 0 to 1, which is best for a probability distribution.
     const hiddenLayer = tf.layers.dense({
-      units: units,
+      units: parseInt(units),
       inputShape: [3],
       activation: 'sigmoid'
     });
@@ -110,7 +110,7 @@ class TrainModel extends Component {
     model.add(outputLayer);
     
     // Create optimizer with stocastic gradient descent to minimize the loss with learning rate of 0.25
-    const optimizer = tf.train.sgd(learningRate);
+    const optimizer = tf.train.sgd(parseInt(learningRate));
   
     // Compile the model with the optimizer created above to reduce the loss. 
     // Use loss function of categoricalCrossentropy, which is best for comparing two probability distributions
@@ -125,8 +125,8 @@ class TrainModel extends Component {
     // shuffle: Shuffles data at each epoch so it's not in the same order
     // validationSplit: Saves some of the training data to be used as validation data (0.1 = 10%)
     const options = {
-      epochs: epochs,
-      batchSize: batchSize,
+      epochs: parseInt(epochs),
+      batchSize: parseInt(batchSize),
       shuffle: true,
       validationSplit: 0.1,
       callbacks: {
@@ -161,11 +161,34 @@ class TrainModel extends Component {
     });
   }
   
-  updateValues = evt => {
-    this.setState(
-    {[evt.target.name] : evt.target.value
-    });
+  updateValue = evt => {
+      const defaults = {
+        loading: false,
+        currentEpoch: 0,
+        lossResult: 0.000,
+        epochs: 10,
+        batchSize: 32,
+        units: 20,
+        learningRate: 0.25
+      };
+      if (evt.target.value !== '' || parseFloat(evt.target.value) > 0){
+        this.setState({
+          [evt.target.name] : parseFloat(evt.target.value)
+        });
+      } else {
+        this.setState({
+          [evt.target.name] : defaults[evt.target.name]
+        });
+      }
   };
+  
+  getValue = evt => {
+    evt.target.value = this.state[evt.target.name];
+  }
+  
+  clearValue = evt => {
+    evt.target.value = '';
+  }
   
   predictModel = () => {
     let r = 75;
@@ -193,19 +216,19 @@ class TrainModel extends Component {
       <div className="training-inputs">
         <div className="input-container">
           <label className="label" htmlFor="epochs">Epochs</label>
-          <input type="text" name="epochs" className="input" id="epochs" value={epochs} onChange={evt => this.updateValues(evt)}></input>
+          <input type="text" name="epochs" className="input" id="epochs" value={epochs} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
         </div>
         <div className="input-container">
           <label className="label" htmlFor="units">Units</label>
-          <input type="text" name="units" className="input" id="units" value={units} onChange={evt => this.updateValues(evt)}></input>
+          <input type="text" name="units" className="input" id="units" value={units} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
         </div>
         <div className="input-container">
           <label className="label" htmlFor="batch-size">Batch Size</label>
-          <input type="text" name="batch-size" className="input" id="batch-size" value={batchSize} onChange={evt => this.updateValues(evt)}></input>
+          <input type="text" name="batchSize" className="input" id="batch-size" value={batchSize} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
         </div>
         <div className="input-container">
           <label className="label" htmlFor="learning-rate">Learning Rate</label>
-          <input type="text" name="learning-rate" className="input" id="learning-rate" value={learningRate} onChange={evt => this.updateValues(evt)}></input>
+          <input type="text" name="learningRate" className="input" id="learning-rate" value={learningRate} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
         </div>
       </div>
       <div className="training-model">
@@ -232,9 +255,16 @@ class TrainModel extends Component {
       </div>
         <div className="training-results">
           <h2>Training Results</h2>
-          <div className="epoch"><span>Epoch:</span> <span>{currentEpoch}</span></div>
-          <div className="loss"><span>Loss:</span> <span>{lossResult}</span></div>
+          <div className="epoch">
+            <span>Epoch:</span>
+            <span>{currentEpoch}</span>
+          </div>
+          <div className="loss">
+            <span>Loss:</span>
+            <span>{lossResult}</span>
+          </div>
         </div>
+        <Upload />
         <div className="predict-model">
           <a className={`button ${loading ? 'disabled' : ''}`} href="#" onClick={() => this.predictModel()}>
             {loading ?
@@ -246,7 +276,10 @@ class TrainModel extends Component {
             : 'Predict Model'
             }
           </a>
-          <div className="prediction-results"><span>Foundation Match:</span><span>{foundation}</span></div>
+          <div className="prediction-results">
+            <span>Foundation Match:</span>
+            <span>{foundation}</span>
+          </div>
         </div>
       </div>
     );
