@@ -7,29 +7,51 @@
     .canvas {
         margin: 3px solid #000;
     }
-    .upload-button {
-        color: #fff;
+    // .upload {
+    //     color: #fff;
+    //     background-color: #000;
+    //     font-family: 'Oswald', sans-serif;
+    //     padding: 1rem;
+    //     text-decoration: none;
+    //     margin: 1rem;
+    //     &:hover {
+    //         text-decoration: underline;
+    //         cursor: pointer;
+    //     }
+    //     &.disabled {
+    //         background-color: #888;
+    //     }
+    //     &.disabled:hover {
+    //         text-decoration: none;
+    //         cursor: not-allowed;
+    //     }
+    // }
+    // input[type="file"] {
+    //     display: flex !important;
+    //     justify-content: center !important;
+    //     align-items: center !important;
+    //     text-align: center !important;
+    // }
+    .upload-button-container {
+        display: flex;
+        align-items: center;
+        margin: 1rem;
         background-color: #000;
-        font-family: 'Oswald', sans-serif;
         padding: 1rem;
         text-decoration: none;
-        margin: 1rem;
-        &:hover {
-            text-decoration: underline;
-            cursor: pointer;
+        width: calc(500px - 2rem);
+        height: 3rem;
+        .upload-button {
+            font-size: 1rem !important;
+            font-family: "Oswald", sans-serif;
+            color: #fff;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: calc((500px - 2rem)/4 + 2rem);
+            padding-right: calc((500px - 2rem)/4);
+            text-align: center;
         }
-        &.disabled {
-            background-color: #888;
-        }
-        &.disabled:hover {
-            text-decoration: none;
-            cursor: not-allowed;
-        }
-    }
-    input[type="file"] {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        text-align: center !important;
     }
 }

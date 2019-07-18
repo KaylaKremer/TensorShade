@@ -49,7 +49,9 @@ class Upload extends Component {
         return (
             <div className="upload">
                 <canvas width={500} height={500} ref={this.canvas} className="canvas"></canvas>
-                <input type="file" className="upload-button" onChange={evt => this.uploadImage(evt)} />
+                <div className="upload-button-container">
+                    <input type="file" className="upload-button" onChange={evt => this.uploadImage(evt)} />
+                </div>
             </div>
         );
     }
