@@ -3,10 +3,9 @@
     justify-content: center;
     align-items: center;
     flex-flow: column;
-    .upload-canvas {
-        width: 500px;
-        height: 500px;
-        fill: #000;
+    margin: 1rem;
+    .canvas {
+        margin: 3px solid #000;
     }
     .upload-button {
         color: #fff;
@@ -26,5 +25,11 @@
             text-decoration: none;
             cursor: not-allowed;
         }
+    }
+    input[type="file"] {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
     }
 }

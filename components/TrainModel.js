@@ -110,7 +110,7 @@ class TrainModel extends Component {
     model.add(outputLayer);
     
     // Create optimizer with stocastic gradient descent to minimize the loss with learning rate of 0.25
-    const optimizer = tf.train.sgd(parseInt(learningRate));
+    const optimizer = tf.train.sgd(parseFloat(learningRate));
   
     // Compile the model with the optimizer created above to reduce the loss. 
     // Use loss function of categoricalCrossentropy, which is best for comparing two probability distributions
@@ -163,9 +163,6 @@ class TrainModel extends Component {
   
   updateValue = evt => {
       const defaults = {
-        loading: false,
-        currentEpoch: 0,
-        lossResult: 0.000,
         epochs: 10,
         batchSize: 32,
         units: 20,
@@ -173,7 +170,7 @@ class TrainModel extends Component {
       };
       if (evt.target.value !== '' || parseFloat(evt.target.value) > 0){
         this.setState({
-          [evt.target.name] : parseFloat(evt.target.value)
+          [evt.target.name] : evt.target.value
         });
       } else {
         this.setState({
