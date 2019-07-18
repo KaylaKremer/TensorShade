@@ -16,6 +16,7 @@
         text-decoration: none;
         width: calc(500px - 2rem);
         height: 3rem;
+        cursor: pointer;
         .upload-button {
             font-size: 1rem !important;
             font-family: "Oswald", sans-serif;
@@ -27,6 +28,7 @@
             padding-left: calc((500px - 2rem)/4 + 2rem);
             padding-right: calc((500px - 2rem)/4);
             text-align: center;
+            cursor: pointer;
         }
     }
 }

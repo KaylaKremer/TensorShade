@@ -26,7 +26,8 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "parcel-bundler": "^1.12.3",
-    "sass": "^1.21.0"
+    "sass": "^1.21.0",
+    "mem": ">=4.0.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
@@ -34,7 +35,8 @@
     "@tensorflow/tfjs-vis": "^1.1.0",
     "babel-polyfill": "^6.26.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "mem": ">=4.0.0"
   },
   "keywords": [
     "Tensorflow",
