@@ -159,7 +159,7 @@ export default class TrainModel extends Component {
       units: 20,
       learningRate: 0.25
     });
-  }
+  };
   
   updateValue = evt => {
       const defaults = {
@@ -181,11 +181,11 @@ export default class TrainModel extends Component {
   
   getValue = evt => {
     evt.target.value = this.state[evt.target.name];
-  }
+  };
   
   clearValue = evt => {
     evt.target.value = '';
-  }
+  };
   
   predictModel = () => {
     let r = 75;
