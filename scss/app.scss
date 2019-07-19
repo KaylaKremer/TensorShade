@@ -2,16 +2,19 @@ html {
     height: 100%;
     body {
         background-image: radial-gradient(circle farthest-corner at center, rgb(183, 123, 235) 0%, rgb(228, 56, 237) 100%);
+        color: #fff;
+        font-family: 'Oswald', sans-serif;
+        font-size: 1rem;
         h1 {
             font-size: 3rem;
-            color: #fff;
-            font-family: 'Oswald', sans-serif;
+            //color: #fff;
+            //font-family: 'Oswald', sans-serif;
             margin: 0 !important;
             padding: 0 !important;
         }
         h2, h3, h4, h5, h6 {
-            color: #fff;
-            font-family: 'Oswald', sans-serif;
+            //color: #fff;
+            //font-family: 'Oswald', sans-serif;
             margin: 0 !important;
             padding: 0 !important;
         }

@@ -19,10 +19,16 @@
     margin: 1rem 0;
     width: 100%;
     .instructions-list {
+        padding-inline-start: 0 !important;
+        margin: 0 1rem;
+        max-width: 500px;
         .instructions-step {
             list-style-type: none;
-            color: #fff;
-            font-family: 'Oswald', sans-serif;
+            display: flex;
+            margin-bottom: 0.25rem;
+            .hand-pointer {
+                margin-right: 0.5rem;
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
 .training-inputs {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
-    margin: 1rem 0;
-    width: 100%;
+    margin: 1rem auto;
+    width: 26rem;
     .input-group {
         display: flex;
         flex-flow: column;
@@ -22,7 +22,6 @@
                 border: 2px solid black;
                 font-size: 14px;
                 padding-left: 3px;
-                width: 8rem;
             }
         }
     }

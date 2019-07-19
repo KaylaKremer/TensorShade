@@ -15,10 +15,10 @@ const Header = props => {
             </div>
             <div className="instructions">
                 <ul className="instructions-list">
-                    <li className="instructions-step" key="step-1">👉🏻Click the Train Model button (This will take a few seconds!)</li>
-                    <li className="instructions-step" key="step-2">👉Click camera icon to take a snapshot of your skin shade!</li>
-                    <li className="instructions-step" key="step-3">👉🏽Optionally, click the Upload button to upload your own picture of your skin</li>
-                    <li className="instructions-step" key="step-4">👉🏿Click the Run Skin Analysis button to get your matching foundation shade(s)!</li>
+                    <li className="instructions-step" key="step-1"><div className="hand-pointer">👉🏻</div><div className="instructions-text">Click the Train Model button (This will take a few seconds, possibly minutes!)</div></li>
+                    <li className="instructions-step" key="step-2"><div className="hand-pointer">👉</div><div className="instructions-text">Optionally, adjust the number of epochs, units, batch size, and/or learning rate to your liking. (You can also revert back to default values by clicking on the Reset button).</div></li>
+                    <li className="instructions-step" key="step-3"><div className="hand-pointer">👉🏽</div><div className="instructions-text">Once the model is trained, upload a picture of your skin. Then click on what part of the photo you want to use for the analysis (You can see the color picker preview in the top-right corner).</div></li>
+                    <li className="instructions-step" key="step-4"><div className="hand-pointer">👉🏿</div><div className="instructions-text">Click the Run Skin Analysis button to get your best matching foundation shade for your skin tone!</div></li>
                 </ul>
             </div>
         </div>
