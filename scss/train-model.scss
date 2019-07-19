@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     margin: 1rem auto;
-    width: 26rem;
+    max-width: 30rem;
     .input-group {
         display: flex;
         flex-flow: column;
@@ -28,9 +28,10 @@
 
 .training-model {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin: 1rem 0;
+    max-width: 30rem;
+    margin: 2rem auto;
     .button {
         width: 10rem;
         height: 3rem;
@@ -43,7 +44,6 @@
         justify-content: center;
         padding: 1rem;
         text-decoration: none;
-        margin: 1rem;
         &:hover {
             text-decoration: underline;
             cursor: pointer;
