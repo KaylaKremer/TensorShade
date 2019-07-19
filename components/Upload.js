@@ -43,7 +43,7 @@ export default class Upload extends Component {
         context.lineWidth = 5;
         context.strokeStyle = "#000";
         context.strokeRect(0, 0, canvas.current.width, canvas.current.height);
-        context.font = "250px Oswald";
+        context.font = "200px Oswald";
         context.textAlign="center";
         context.textBaseline = "middle";
         context.fillText('📷', canvas.current.width/2, canvas.current.height/2);

@@ -211,21 +211,25 @@ export default class TrainModel extends Component {
     return (
     <div>
       <div className="training-inputs">
-        <div className="input-container">
-          <label className="label" htmlFor="epochs">Epochs</label>
-          <input type="text" name="epochs" className="input" id="epochs" value={epochs} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
+        <div className="input-group">
+          <div className="input-container">
+            <label className="label" htmlFor="epochs">Epochs</label>
+            <input type="text" name="epochs" className="input" id="epochs" value={epochs} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
+          </div>
+          <div className="input-container">
+            <label className="label" htmlFor="units">Units</label>
+            <input type="text" name="units" className="input" id="units" value={units} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
+          </div>
         </div>
-        <div className="input-container">
-          <label className="label" htmlFor="units">Units</label>
-          <input type="text" name="units" className="input" id="units" value={units} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
-        </div>
-        <div className="input-container">
-          <label className="label" htmlFor="batch-size">Batch Size</label>
-          <input type="text" name="batchSize" className="input" id="batch-size" value={batchSize} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
-        </div>
-        <div className="input-container">
-          <label className="label" htmlFor="learning-rate">Learning Rate</label>
-          <input type="text" name="learningRate" className="input" id="learning-rate" value={learningRate} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
+        <div className="input-group">
+          <div className="input-container">
+            <label className="label" htmlFor="batch-size">Batch Size</label>
+            <input type="text" name="batchSize" className="input" id="batch-size" value={batchSize} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
+          </div>
+          <div className="input-container">
+            <label className="label" htmlFor="learning-rate">Learning Rate</label>
+            <input type="text" name="learningRate" className="input" id="learning-rate" value={learningRate} onFocus={evt => this.clearValue(evt)} onBlur={evt => this.getValue(evt)} onChange={evt => this.updateValue(evt)}></input>
+          </div>
         </div>
       </div>
       <div className="training-model">
