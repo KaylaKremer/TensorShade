@@ -7,7 +7,7 @@ import "../scss/train-model.scss";
 let model;
 let foundationLabels;
 
-class TrainModel extends Component {
+export default class TrainModel extends Component {
   state = ({
     loading: false,
     currentEpoch: 0,
@@ -283,4 +283,3 @@ class TrainModel extends Component {
   }
 }
 
-export default TrainModel;

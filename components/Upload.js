@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import '../scss/upload.scss';
 
-class Upload extends Component {
+export default class Upload extends Component {
 
     canvas = React.createRef();
+    colorPicker = React.createRef();
     
     state = {
         file: null,
         imageSource: null
     };
 
-    uploadImage = evt => {
+    canvasImage = evt => {
         const reader = new FileReader();
         reader.onload = evt => {
             const img = new Image();
@@ -27,11 +28,14 @@ class Upload extends Component {
             img.src = evt.target.result;
         }
        reader.readAsDataURL(evt.target.files[0]);
-    }
+    };
     
-    
+    colorPicker = evt => {
+        console.log('color picker!!');
+    };
     
     componentDidMount() {
+        // Canvas for canvasing image
         const canvas = this.canvas;
         const context = canvas.current.getContext('2d');
         context.fillStyle = "#fff";
@@ -40,21 +44,22 @@ class Upload extends Component {
         context.strokeStyle = "#000";
         context.strokeRect(0, 0, canvas.current.width, canvas.current.height);
         context.font = "250px Oswald";
-        context.textAlign="center"; 
+        context.textAlign="center";
         context.textBaseline = "middle";
         context.fillText('📷', canvas.current.width/2, canvas.current.height/2);
     }
 
     render() {
         return (
-            <div className="upload">
-                <canvas width={500} height={500} ref={this.canvas} className="canvas"></canvas>
+            <div className="upload-container">
+                <div className="canvas-container">
+                    <canvas width={500} height={500} ref={this.canvas} className="canvas"></canvas>
+                    <img ref={this.colorPicker} className="color-picker" />
+                </div>
                 <div className="upload-button-container">
-                    <input type="file" className="upload-button" onChange={evt => this.uploadImage(evt)} />
+                    <input type="file" className="upload-button" onChange={evt => this.canvasImage(evt)} />
                 </div>
             </div>
         );
     }
 }
-
-export default Upload;

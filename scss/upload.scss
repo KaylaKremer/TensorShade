@@ -1,11 +1,21 @@
-.upload {
+.upload-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: column;
     margin: 1rem;
-    .canvas {
-        margin: 3px solid #000;
+    .canvas-container {
+        display: flex;
+        justify-content: flex-end;
+        position: relative;
+        .color-picker {
+            z-index: 10;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #000;
+            background-color: #fff;
+        }
     }
     .upload-button-container {
         display: flex;
