@@ -35,8 +35,9 @@ export default class Upload extends Component {
     };
     
     componentDidMount() {
-        // Canvas for canvasing image
+        // Canvas for uploaded image
         const canvas = this.canvas;
+        canvas.current.height = canvas.current.width;
         const context = canvas.current.getContext('2d');
         context.fillStyle = "#fff";
         context.fillRect(0, 0, canvas.current.width, canvas.current.height);
@@ -51,13 +52,13 @@ export default class Upload extends Component {
 
     render() {
         return (
-            <div className="upload-container">
-                <div className="canvas-container">
-                    <canvas width={500} height={500} ref={this.canvas} className="canvas"></canvas>
-                    <img ref={this.colorPicker} className="color-picker" />
-                </div>
+            <div className="upload">
                 <div className="upload-button-container">
                     <input type="file" className="upload-button" onChange={evt => this.canvasImage(evt)} />
+                </div>
+                <div className="canvas-container">
+                    <canvas ref={this.canvas} className="canvas"></canvas>
+                    <img ref={this.colorPicker} className="color-picker" />
                 </div>
             </div>
         );

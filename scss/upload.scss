@@ -1,13 +1,18 @@
-.upload-container {
+.upload {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: column;
-    margin: 1rem;
+    margin: 0 auto;
+    max-width: 30rem;
     .canvas-container {
         display: flex;
         justify-content: flex-end;
         position: relative;
+        width: 100%;
+        canvas {
+            width: 100%;
+        }
         .color-picker {
             z-index: 10;
             position: absolute;
