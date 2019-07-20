@@ -211,13 +211,14 @@ export default class TrainModel extends Component {
     const {loading, currentEpoch, lossResult, epochs, units, batchSize, learningRate, foundation} = this.state;
     return (
     <div>
-      <div className="results-container">
+  	  <div class="divider"></div>
+      <div className="train-results">
         <h2>Training Results</h2>
-        <div className="results">
+        <div className="train-result">
           <span>Epoch:</span>
           <span>{currentEpoch}</span>
         </div>
-        <div className="results">
+        <div className="train-result">
           <span>Loss:</span>
           <span>{lossResult}</span>
         </div>
@@ -266,13 +267,15 @@ export default class TrainModel extends Component {
           }
         </div>
       </div>
-        
+      
+      <div class="divider"></div>
       <Upload loading={loading} />
+      <div class="divider"></div>
       
       <div className="predict-model">
-        <div className="results-container">
+        <div className="predict-results">
           <h2>Prediction Results</h2>
-          <div className="results">
+          <div className="predict-result">
             <span>Foundation Match:</span>
             <span>{foundation}</span>
           </div>

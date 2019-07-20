@@ -5,11 +5,32 @@
     margin-left: 1rem;
 }
 
+.train-results,
+.predict-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+    margin: 3rem auto 0 auto;
+    max-width: 28rem;
+    background: rgba(0, 0, 0, 0.2);
+    position: relative;
+    .train-result,
+    .predict-result {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.25rem;
+    }
+}
+
 .train-inputs {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 1rem auto;
+    margin: 2rem auto;
     max-width: 30rem;
     .input-group {
         display: flex;
@@ -39,7 +60,7 @@
     justify-content: space-between;
     align-items: center;
     max-width: 30rem;
-    margin: 2rem auto;
+    margin: 2rem auto 3rem auto;
     .train-model-button {
         width: 10rem;
         height: 3rem;
@@ -61,24 +82,7 @@
         }
     }
 }
-.results-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    font-size: 1.5rem;
-    margin: 0 auto;
-    max-width: 28rem;
-    background: rgba(0, 0, 0, 0.2);
-    position: relative;
-    .results {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.25rem;
-    }
-}
+
 
 .predict-model {
     margin-top: 3rem;
