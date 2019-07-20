@@ -1,3 +1,10 @@
+.margin-right {
+    margin-right: 1rem;
+}
+.margin-left {
+    margin-left: 1rem;
+}
+
 .training-inputs {
     display: flex;
     justify-content: space-between;
@@ -21,6 +28,7 @@
                 border: 2px solid black;
                 font-size: 1.25rem;
                 padding-left: 3px;
+                max-width: 11.5rem;
             }
         }
     }
@@ -88,15 +96,22 @@
         }
     }
 }
-.training-results {
+.results-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    .epoch,
-    .loss {
-        width: 8.5rem;
+    padding: 1rem;
+    font-size: 1.5rem;
+    margin: 0 auto;
+    max-width: 28rem;
+    background: rgba(0, 0, 0, 0.2);
+    position: relative;
+    .results {
+        width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        padding: 0.25rem;
     }
 }
 
