@@ -16,7 +16,7 @@ export default class TrainModel extends Component {
     units: 20,
     batchSize: 32,
     learningRate: 0.25,
-    foundation: ''
+    foundation: 'None'
   });
   
   //Converts hexadecimal values to RGB color values
@@ -157,7 +157,8 @@ export default class TrainModel extends Component {
       epochs: 10,
       batchSize: 32,
       units: 20,
-      learningRate: 0.25
+      learningRate: 0.25,
+      foundation: 'None'
     });
   };
   
@@ -210,7 +211,18 @@ export default class TrainModel extends Component {
     const {loading, currentEpoch, lossResult, epochs, units, batchSize, learningRate, foundation} = this.state;
     return (
     <div>
-      <div className="training-inputs">
+      <div className="results-container">
+        <h2>Training Results</h2>
+        <div className="results">
+          <span>Epoch:</span>
+          <span>{currentEpoch}</span>
+        </div>
+        <div className="results">
+          <span>Loss:</span>
+          <span>{lossResult}</span>
+        </div>
+      </div>
+      <div className="train-inputs">
         <div className="input-group margin-right">
           <div className="input-container">
             <label className="label" htmlFor="epochs">Epochs</label>
@@ -232,8 +244,8 @@ export default class TrainModel extends Component {
           </div>
         </div>
       </div>
-      <div className="training-model">
-        <a className={`button margin-right ${loading ? 'disabled' : ''}`} href="#" onClick={() => this.trainModel()}>
+      <div className="train-model">
+        <div className={`train-model-button margin-right ${loading ? 'disabled' : ''}`} onClick={() => this.trainModel()}>
           {loading ?
             <div className="loader">
               <div className="inner one"></div>
@@ -242,8 +254,8 @@ export default class TrainModel extends Component {
             </div>
           : 'Train Model'
           }
-        </a>
-        <a className={`button margin-left ${loading ? 'disabled' : ''}`} href="#" onClick={() => this.resetModel()}>
+        </div>
+        <div className={`train-model-button margin-left ${loading ? 'disabled' : ''}`} onClick={() => this.resetModel()}>
         {loading ?
             <div className="loader">
               <div className="inner one"></div>
@@ -252,22 +264,20 @@ export default class TrainModel extends Component {
             </div>
           : 'Reset'
           }
-        </a>
+        </div>
       </div>
+        
+      <Upload loading={loading} />
+      
+      <div className="predict-model">
         <div className="results-container">
-          <h2>Training Results</h2>
+          <h2>Prediction Results</h2>
           <div className="results">
-            <span>Epoch:</span>
-            <span>{currentEpoch}</span>
-          </div>
-          <div className="results">
-            <span>Loss:</span>
-            <span>{lossResult}</span>
+            <span>Foundation Match:</span>
+            <span>{foundation}</span>
           </div>
         </div>
-        <Upload />
-        <div className="predict-model">
-          <a className={`button ${loading ? 'disabled' : ''}`} href="#" onClick={() => this.predictModel()}>
+        <div className={`predict-model-button ${loading ? 'disabled' : ''}`} onClick={() => this.predictModel()}>
             {loading ?
               <div className="loader">
                 <div className="inner one"></div>
@@ -276,16 +286,9 @@ export default class TrainModel extends Component {
               </div>
             : 'Predict Model'
             }
-          </a>
-          <div className="results-container">
-            <h2>Prediction Results</h2>
-            <div className="results">
-              <span>Foundation Match:</span>
-              <span>{foundation}</span>
-            </div>
-          </div>
         </div>
       </div>
+    </div>
     );
   }
 }

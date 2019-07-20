@@ -86,16 +86,26 @@ export default class Upload extends Component {
     }
 
     render() {
+        const {loading} = this.props;
         return (
             <div className="upload">
                 <div ref={this.measure} className="measure"></div>
-                <div className="upload-button-container">
-                    <label className="upload-label" htmlFor="upload-button">Upload Image</label>
-                    <input type="file" className="upload-button" id="upload-button" onChange={evt => this.uploadImage(evt)} />
-                </div>
                 <div className="canvas-container">
                     <canvas ref={this.canvas} className="canvas"></canvas>
                     <img ref={this.colorPicker} className="color-picker" />
+                </div>
+                <div className={`upload-button-container ${loading ? 'disabled' : ''}`}>
+                    <label className={`upload-label ${loading ? 'disabled' : ''}`} htmlFor="upload-button">
+                        {loading ?
+                          <div className="loader">
+                            <div className="inner one"></div>
+                            <div className="inner two"></div>
+                            <div className="inner three"></div>
+                          </div>
+                        : 'Upload Image'
+                        }
+                    </label>
+                    <input type="file" className="upload-button" id="upload-button" onChange={evt => this.uploadImage(evt)} />
                 </div>
             </div>
         );
