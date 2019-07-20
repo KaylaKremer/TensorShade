@@ -25,25 +25,26 @@
     .upload-button-container {
         display: flex;
         align-items: center;
-        margin: 1rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
         background-color: #000;
-        padding: 1rem;
+        padding: 1rem 11rem;
         text-decoration: none;
-        width: calc(500px - 2rem);
         height: 3rem;
+        max-width: 30rem;
         cursor: pointer;
-        .upload-button {
-            font-size: 1.25rem !important;
-            font-family: "Oswald", sans-serif;
-            color: #fff;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-left: calc((500px - 2rem)/4 + 2rem);
-            padding-right: calc((500px - 2rem)/4);
-            text-align: center;
+        &:hover {
+            text-decoration: underline;
+        }
+        .upload-label {
             cursor: pointer;
+            font-size: 1.25rem;
+            width: 8rem;
+            max-width: 30rem;
+            text-align: center;
+        }
+        .upload-button {
+            display: none;
         }
     }
 }

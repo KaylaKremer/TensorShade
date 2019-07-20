@@ -44,7 +44,7 @@ export default class Upload extends Component {
         context.lineWidth = 5;
         context.strokeStyle = "#000";
         context.strokeRect(0, 0, canvas.current.width, canvas.current.height);
-        context.font = "200px Oswald";
+        context.font = "125px Oswald";
         context.textAlign="center";
         context.textBaseline = "middle";
         context.fillText('📷', canvas.current.width/2, canvas.current.height/2);
@@ -54,7 +54,8 @@ export default class Upload extends Component {
         return (
             <div className="upload">
                 <div className="upload-button-container">
-                    <input type="file" className="upload-button" onChange={evt => this.canvasImage(evt)} />
+                    <label className="upload-label" htmlFor="upload-button">Upload Image</label>
+                    <input type="file" className="upload-button" id="upload-button" onChange={evt => this.canvasImage(evt)} />
                 </div>
                 <div className="canvas-container">
                     <canvas ref={this.canvas} className="canvas"></canvas>
