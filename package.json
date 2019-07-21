@@ -1,7 +1,7 @@
 {
   "name": "TensorShade",
   "version": "1.0.0",
-  "description": "A machine learning Tensorflow React app that best matches foundation shades from various makeup brands to photos of skin.",
+  "description": "A machine learning app that uses Tensorflow, React, and Parcel to best match makeup foundation shades from various beauty brands to images of skin tones.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

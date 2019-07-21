@@ -38,7 +38,7 @@ export default class Predict extends Component {
                         <div className="inner two"></div>
                         <div className="inner three"></div>
                       </div>
-                    : 'Predict Model'
+                    : 'Run Analysis'
                     }
                 </div>
           </div>

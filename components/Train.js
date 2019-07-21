@@ -13,7 +13,7 @@ export default class Train extends Component {
     loading: false,
     currentEpoch: 0,
     lossResult: 0.000,
-    epochs: 10,
+    epochs: 25,
     units: 20,
     batchSize: 32,
     learningRate: 0.25,
@@ -157,7 +157,7 @@ export default class Train extends Component {
       loading: false,
       currentEpoch: 0,
       lossResult: 0.000,
-      epochs: 10,
+      epochs: 25,
       batchSize: 32,
       units: 20,
       learningRate: 0.25,
@@ -203,6 +203,7 @@ export default class Train extends Component {
     console.log('rgb', rgb);
   };
   
+  // Set state of the predicted foundation at the top level so it can be passed down to the Predict child component
   setFoundation = foundation => {
     this.setState({
       foundation
