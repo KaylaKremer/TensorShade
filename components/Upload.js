@@ -9,15 +9,17 @@ export default class Upload extends Component {
     colorPicker = React.createRef();
     
     state = {
-        file: null,
-        imageSource: null
+        rgb: []
     };
 
     uploadImage = evt => {
+        // Reset the canvas so images won't overlap if user uploads more than one image.
+        this.resetCanvas();
+        
         // Create File Reader
         const reader = new FileReader();
         
-        // When reader loads, create a new image. 
+        // When reader loads, create a new image.
         // Also get the canvas and its context as well as the hidden measure div from the DOM.
         reader.onload = evt => {
             const img = new Image();
@@ -50,6 +52,9 @@ export default class Upload extends Component {
                     context.drawImage(img, 0,0, newWidth, newHeight);
                 }
                 
+                // Add onclick event of pickColor to the canvas
+                canvas.current.onclick = evt => this.pickColor(evt);
+                
                 // Stroke the canvas again
                 context.lineWidth = 5;
                 context.strokeStyle = "#000";
@@ -58,20 +63,32 @@ export default class Upload extends Component {
             img.onerror = err => console.error(`Error: ${err}`);
             img.src = evt.target.result;
         }
-       reader.readAsDataURL(evt.target.files[0]);
+        if (evt.target.files[0]){
+            reader.readAsDataURL(evt.target.files[0]);
+        }
     };
     
-    colorPicker = evt => {
-        console.log('color picker!!');
+    pickColor = (evt) => {
+        const canvas = this.canvas;
+        const context = canvas.current.getContext('2d');
+        const x = evt.offsetX;
+        const y = evt.offsetY;
+        const imageData = context.getImageData(x, y, 1, 1).data;
+        const rgb = [...imageData];
+        this.setState({
+            rgb
+        });
+        console.log('rgb', rgb);
     };
     
-    componentDidMount() {
+    
+    resetCanvas = () => {
         // Get canvas for uploaded image when component mounts
         const canvas = this.canvas;
-        
+
         // Set canvas width and height to be the same so it's drawn as a square
         canvas.current.height = canvas.current.width;
-        
+
         // Get the context of the canvas. Set its fill, stroke, and text with camera emoji
         const context = canvas.current.getContext('2d');
         context.fillStyle = "#fff";
@@ -83,16 +100,22 @@ export default class Upload extends Component {
         context.textAlign="center";
         context.textBaseline = "middle";
         context.fillText('📷', canvas.current.width / 2, canvas.current.height / 2);
+    };
+    
+    componentDidMount() {
+        this.resetCanvas();
     }
 
     render() {
         const {loading} = this.props;
+        const {rgb} = this.state;
+        const [red, green, blue, alpha] = rgb;
         return (
             <div className="upload">
                 <div ref={this.measure} className="measure"></div>
-                <div className="canvas-container">
+                <div ref={this.canvasContainer} className="canvas-container">
                     <canvas ref={this.canvas} className="canvas"></canvas>
-                    <img ref={this.colorPicker} className="color-picker" />
+                    <img style={{backgroundColor: `${rgb.length > 0 ? `rgba(${red}, ${blue}, ${green})` : `#fff`}`}} ref={this.colorPicker} className="color-picker" />
                 </div>
                 <div className={`upload-button-container ${loading ? 'disabled' : ''}`}>
                     <label className={`upload-label ${loading ? 'disabled' : ''}`} htmlFor="upload-button">

@@ -1,24 +1,27 @@
 .upload {
-    .measure {
-        position: absolute;
-        left: -10000px;
-        top: -10000px;
-    }
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: column;
     margin: 0 auto;
-    max-width: 30rem;
+    //max-width: 30rem;
+    .measure {
+        position: absolute;
+        left: -10000px;
+        top: -10000px;
+    }
     .canvas-container {
         display: flex;
         justify-content: flex-end;
         position: relative;
         width: 100%;
+        max-width: 30rem;
         margin-top: 1rem;
         .canvas {
             width: 100%;
             height: 100%;
+            //min-width: 250px;
+            //min-height: 250px;
             &:hover {
                 cursor: crosshair;
             }

@@ -1,10 +1,3 @@
-.margin-right {
-    margin-right: 1rem;
-}
-.margin-left {
-    margin-left: 1rem;
-}
-
 .train-results,
 .predict-results {
     display: flex;
@@ -83,7 +76,6 @@
     }
 }
 
-
 .predict-model {
     margin-top: 3rem;
     .predict-model-button {
@@ -105,4 +97,32 @@
             pointer-events: none;
         }
     }
+}
+
+@media screen and (max-width: 450px) {
+    .train-inputs,
+    .train-model {
+        flex-flow: column;
+    }
+    .train-model-button {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 1rem auto !important;
+        background-color: #000 !important;
+        padding: 1rem 0 !important;
+        text-decoration: none !important;
+        height: 3rem !important;
+        max-width: 28rem !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        font-size: 1.25rem !important;
+    }
+    .input-group,
+    .input-container {
+        width: 100%;
+    }
+        .input {
+            max-width: 100% !important;
+        }
 }
