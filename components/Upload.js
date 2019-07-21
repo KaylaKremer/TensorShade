@@ -8,13 +8,14 @@ export default class Upload extends Component {
     canvas = React.createRef();
     colorPicker = React.createRef();
     
+    // Create state to hold the RGB color values
     state = {
         rgb: []
     };
 
     uploadImage = evt => {
         // Reset the canvas so images won't overlap if user uploads more than one image.
-        this.resetCanvas();
+        this.defaultCanvas();
         
         // Create File Reader
         const reader = new FileReader();
@@ -27,6 +28,7 @@ export default class Upload extends Component {
             const canvas = this.canvas;
             const context = canvas.current.getContext('2d');
             img.onload = () => {
+            
                 // When image loads, immediately append it to the hidden measure div to determine its ratio.
                 // Set newWidth to equal the canvas's width and calculate newHeight with the image's ratio.
                 measure.current.appendChild(img);
@@ -60,34 +62,46 @@ export default class Upload extends Component {
                 context.strokeStyle = "#000";
                 context.strokeRect(0, 0, canvas.current.width, canvas.current.height);
             }
+            // Set an onError event if the image fails to load
             img.onerror = err => console.error(`Error: ${err}`);
+            
+            // Set the image source to the result to display the uploaded image in the canvas
             img.src = evt.target.result;
         }
+        
+        // Safe check to ensures there is a file before proceeding to let the reader read the file
         if (evt.target.files[0]){
             reader.readAsDataURL(evt.target.files[0]);
         }
     };
     
-    pickColor = (evt) => {
+    pickColor = evt => {
+        // Get the reference to the canvas and its context
         const canvas = this.canvas;
         const context = canvas.current.getContext('2d');
+        
+        // Get x and y coordinates of mouseclick by using offsetX and offsetY values
         const x = evt.offsetX;
         const y = evt.offsetY;
+        
+        // Get the RGBA color value data at the 1px by 1px the user clicked on
         const imageData = context.getImageData(x, y, 1, 1).data;
+        
+        // Store the RGBA values in  an array and update state
         const rgb = [...imageData];
         this.setState({
             rgb
         });
-        console.log('rgb', rgb);
     };
     
-    
-    resetCanvas = () => {
+    defaultCanvas = () => {
         // Get canvas for uploaded image when component mounts
         const canvas = this.canvas;
 
         // Set canvas width and height to be the same so it's drawn as a square
-        canvas.current.height = canvas.current.width;
+        // Also set both to offsetWidth so that x and y coordinates can be calculated correctly when user clicks on the canvas to pick a color from their uploaded image.
+        canvas.current.width = canvas.current.offsetWidth;
+        canvas.current.height = canvas.current.offsetWidth;
 
         // Get the context of the canvas. Set its fill, stroke, and text with camera emoji
         const context = canvas.current.getContext('2d');
@@ -103,19 +117,20 @@ export default class Upload extends Component {
     };
     
     componentDidMount() {
-        this.resetCanvas();
+        // Initialize the default canvas
+        this.defaultCanvas();
     }
 
     render() {
         const {loading} = this.props;
         const {rgb} = this.state;
-        const [red, green, blue, alpha] = rgb;
+        const [r, g, b] = rgb;
         return (
             <div className="upload">
                 <div ref={this.measure} className="measure"></div>
                 <div ref={this.canvasContainer} className="canvas-container">
                     <canvas ref={this.canvas} className="canvas"></canvas>
-                    <img style={{backgroundColor: `${rgb.length > 0 ? `rgba(${red}, ${blue}, ${green})` : `#fff`}`}} ref={this.colorPicker} className="color-picker" />
+                    <img style={{backgroundColor: `${rgb.length > 0 ? `rgba(${r}, ${b}, ${g})` : `#fff`}`}} ref={this.colorPicker} className="color-picker" />
                 </div>
                 <div className={`upload-button-container ${loading ? 'disabled' : ''}`}>
                     <label className={`upload-label ${loading ? 'disabled' : ''}`} htmlFor="upload-button">
