@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import shadesData from '../data/shades.json';
 import * as tf from '@tensorflow/tfjs';
 import Upload from './Upload';
-import "../scss/train-model.scss";
+import Predict from './Predict';
+import "../scss/train.scss";
 
 let model;
 let foundationLabels;
 
-export default class TrainModel extends Component {
+export default class Train extends Component {
   state = ({
     loading: false,
     currentEpoch: 0,
@@ -194,27 +195,19 @@ export default class TrainModel extends Component {
     evt.target.value = '';
   };
   
-  predictModel = () => {
-    const [r, g, b] = this.state.rgb;
-    tf.tidy(() => {
-      const input = tf.tensor2d([
-        [r / 255, g / 255, b / 255]
-      ]);
-      let results = model.predict(input);
-      let argMax = results.argMax(1);
-      let index = argMax.dataSync()[0];
-      let foundation = foundationLabels[index];
-      this.setState({
-        foundation
-      });
-    });
-  };
-  
   // Set state of RGB values at the top level so it can be passed down to Upload and Predict child components
   setRGB = rgb => {
     this.setState({
       rgb
     });
+    console.log('rgb', rgb);
+  };
+  
+  setFoundation = foundation => {
+    this.setState({
+      foundation
+    });
+    console.log('foundation', foundation);
   }
 
   // Render training model results
@@ -281,25 +274,7 @@ export default class TrainModel extends Component {
       <div className="divider"></div>
       <Upload loading={loading} rgb={rgb} setRGB={this.setRGB} />
       <div className="divider"></div>
-      <div className="predict-model">
-        <div className="predict-results">
-          <h2>Prediction Results</h2>
-          <div className="predict-result">
-            <span>Foundation Match:</span>
-            <span>{foundation}</span>
-          </div>
-        </div>
-        <div className={`predict-model-button ${loading ? 'disabled' : ''}`} onClick={() => this.predictModel()}>
-            {loading ?
-              <div className="loader">
-                <div className="inner one"></div>
-                <div className="inner two"></div>
-                <div className="inner three"></div>
-              </div>
-            : 'Predict Model'
-            }
-        </div>
-      </div>
+      <Predict loading={loading} rgb={rgb} model={model} foundation={foundation} foundationLabels={foundationLabels} setFoundation={this.setFoundation} />
     </div>
     );
   }
