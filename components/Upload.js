@@ -7,11 +7,6 @@ export default class Upload extends Component {
     measure = React.createRef();
     canvas = React.createRef();
     colorPicker = React.createRef();
-    
-    // Create state to hold the RGB color values
-    state = {
-        rgb: []
-    };
 
     uploadImage = evt => {
         // Reset the canvas so images won't overlap if user uploads more than one image.
@@ -89,9 +84,7 @@ export default class Upload extends Component {
         
         // Store the RGBA values in  an array and update state
         const rgb = [...imageData];
-        this.setState({
-            rgb
-        });
+        this.props.setRGB(rgb);
     };
     
     defaultCanvas = () => {
@@ -122,8 +115,7 @@ export default class Upload extends Component {
     }
 
     render() {
-        const {loading} = this.props;
-        const {rgb} = this.state;
+        const {loading, rgb} = this.props;
         const [r, g, b] = rgb;
         return (
             <div className="upload">

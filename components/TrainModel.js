@@ -16,7 +16,8 @@ export default class TrainModel extends Component {
     units: 20,
     batchSize: 32,
     learningRate: 0.25,
-    foundation: 'None'
+    foundation: 'None',
+    rgb: []
   });
   
   //Converts hexadecimal values to RGB color values
@@ -149,6 +150,7 @@ export default class TrainModel extends Component {
     .then(results => console.log('results', results.history.loss));
   };
   
+  // Reset state to default values
   resetModel = () => {
     this.setState({
       loading: false,
@@ -162,6 +164,8 @@ export default class TrainModel extends Component {
     });
   };
   
+  // Update state with values the user has entered. 
+  // If the user tries to use a non-number input or an empty input, set state back to the default values.
   updateValue = evt => {
       const defaults = {
         epochs: 10,
@@ -180,18 +184,18 @@ export default class TrainModel extends Component {
       }
   };
   
+  // If user clicks out of the input, set its value to the current value stored in state
   getValue = evt => {
     evt.target.value = this.state[evt.target.name];
   };
   
+  // Clear input when user begins to type
   clearValue = evt => {
     evt.target.value = '';
   };
   
   predictModel = () => {
-    let r = 75;
-    let g = 20;
-    let b = 33;
+    const [r, g, b] = this.state.rgb;
     tf.tidy(() => {
       const input = tf.tensor2d([
         [r / 255, g / 255, b / 255]
@@ -205,10 +209,17 @@ export default class TrainModel extends Component {
       });
     });
   };
+  
+  // Set state of RGB values at the top level so it can be passed down to Upload and Predict child components
+  setRGB = rgb => {
+    this.setState({
+      rgb
+    });
+  }
 
   // Render training model results
   render() {
-    const {loading, currentEpoch, lossResult, epochs, units, batchSize, learningRate, foundation} = this.state;
+    const {loading, currentEpoch, lossResult, epochs, units, batchSize, learningRate, foundation, rgb} = this.state;
     return (
     <div>
   	  <div className="divider"></div>
@@ -267,11 +278,9 @@ export default class TrainModel extends Component {
           }
         </div>
       </div>
-      
       <div className="divider"></div>
-      <Upload loading={loading} />
+      <Upload loading={loading} rgb={rgb} setRGB={this.setRGB} />
       <div className="divider"></div>
-      
       <div className="predict-model">
         <div className="predict-results">
           <h2>Prediction Results</h2>
