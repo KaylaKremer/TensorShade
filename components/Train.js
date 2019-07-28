@@ -37,7 +37,8 @@ export default class Train extends Component {
   
   trainModel = async () => {
     this.setState({
-      loading: true
+      loading: true,
+      foundation: 'None'
     });
     // Get current values for epochs, units, batch size, and learning rate from state
     const {epochs, units, batchSize, learningRate} = this.state;
