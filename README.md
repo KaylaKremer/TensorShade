@@ -12,6 +12,9 @@ Alternatively, you can view the deployed app here: [https://tensorshade.kaylakre
 
 > Data representing the shades of foundation offered by a variety of beauty brands around the world.
 
+### Note
+I modified the data to include the shade name of each foundation by adding a `shade` key in `shades.json`. This was done to make TensorShade more useful when predicting foundation shade matches to photos of skin. Because I manually had to look up each beauty brand's foundation shades, there may be inaccuracies. Furthermore, some brands have changed their foundation shade range or some brands no longer exist since the original data was collected. In the event that I could not find or match up a beauty brand's foundation with the original data, I omitted it from `shades.json`.
+
 ## Resources
 [https://www.tensorflow.org/js/](https://www.tensorflow.org/js/)
 

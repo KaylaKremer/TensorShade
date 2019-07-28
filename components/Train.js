@@ -43,7 +43,7 @@ export default class Train extends Component {
     const {epochs, units, batchSize, learningRate} = this.state;
     
     // Create list of foundation brand, product, and shade name from the imported shadesData and remove any duplicates if there are any.
-    // There should be a total of 593 unique foundation shades from shades.json!
+    // There should be a total of 584 unique foundation shades from shades.json!
     foundationLabels = shadesData
       .map(shade => `${shade.brand} ${shade.product} - ${shade.shade}`)
       .reduce((accumulator, currentShade) => {
@@ -83,8 +83,8 @@ export default class Train extends Component {
     const inputs = tf.tensor2d(shadeColors);
 
     // Create a 1D tensor out of the foundations array
-    // Apply tf.oneHot to this tensor to create a tensor of 1 & 0 values out of the 593 possible foundation shades.
-    const outputs = tf.oneHot(tf.tensor1d(foundations, 'int32'), 593).cast('float32');
+    // Apply tf.oneHot to this tensor to create a tensor of 1 & 0 values out of the 584 possible foundation shades.
+    const outputs = tf.oneHot(tf.tensor1d(foundations, 'int32'), 584).cast('float32');
    
     // Create a sequential model since the layers inside will go in order
     model = tf.sequential();
@@ -101,11 +101,11 @@ export default class Train extends Component {
     });
     
     // Create a dense output layer since all nodes from the hidden layer will be connected to the outputs
-    // units: Needs to be 593 since there are a total of 593 unique foundation shades
+    // units: Needs to be 584 since there are a total of 584 unique foundation shades
     // inputShape does not need to be defined for output.
     // activation: Softmax function acts like sigmoid except it also makes sure the resulting values add up to 1
     const outputLayer = tf.layers.dense({
-      units: 593,
+      units: 584,
       activation: 'softmax'
     });
     
