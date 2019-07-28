@@ -42,9 +42,10 @@ export default class Train extends Component {
     // Get current values for epochs, units, batch size, and learning rate from state
     const {epochs, units, batchSize, learningRate} = this.state;
     
-    // Create list of foundation brand and product from the imported shadesData and remove any duplicates
+    // Create list of foundation brand, product, and shade name from the imported shadesData and remove any duplicates if there are any.
+    // There should be a total of 593 unique foundation shades from shades.json!
     foundationLabels = shadesData
-      .map(shade => `${shade.brand} - ${shade.product}`)
+      .map(shade => `${shade.brand} ${shade.product} - ${shade.shade}`)
       .reduce((accumulator, currentShade) => {
         if (accumulator.indexOf(currentShade) === -1) {
           accumulator.push(currentShade);
@@ -67,7 +68,7 @@ export default class Train extends Component {
     // Loop through each foundation shade in shadesData. 
     // Push its corresponding index value found in foundationLabels into the foundations array
     for (const shade of shadesData) {
-      foundations.push(foundationLabels.indexOf(`${shade.brand} - ${shade.product}`));
+      foundations.push(foundationLabels.indexOf(`${shade.brand} ${shade.product} - ${shade.shade}`));
     }
     
     // Loop through each RGB color in rgbList. 
@@ -80,10 +81,10 @@ export default class Train extends Component {
     // Create a 2D tensor out of the shadeColors array
     // This tensor will act as the inputs to train the model with
     const inputs = tf.tensor2d(shadeColors);
-  
+
     // Create a 1D tensor out of the foundations array
-    // Apply tf.oneHot to this tensor to create a tensor of 1 & 0 values out of the 39 possible foundation types.
-    const outputs = tf.oneHot(tf.tensor1d(foundations, 'int32'), 39).cast('float32');
+    // Apply tf.oneHot to this tensor to create a tensor of 1 & 0 values out of the 593 possible foundation shades.
+    const outputs = tf.oneHot(tf.tensor1d(foundations, 'int32'), 593).cast('float32');
    
     // Create a sequential model since the layers inside will go in order
     model = tf.sequential();
@@ -92,6 +93,7 @@ export default class Train extends Component {
     // units: How many nodes in the layer
     // inputShape: How many input values (3 because there are 3 RGB values for each shade color)
     // activation: Sigmoid function squashes the resulting values to be between a range of 0 to 1, which is best for a probability distribution.
+    // Activation functions take the weighted sum of inputs plus a bias as input and perform the necessary computation to decide which nodes to fire in a layer.
     const hiddenLayer = tf.layers.dense({
       units: parseInt(units),
       inputShape: [3],
@@ -99,11 +101,11 @@ export default class Train extends Component {
     });
     
     // Create a dense output layer since all nodes from the hidden layer will be connected to the outputs
-    // units: Needs to be 39 since there are 39 possible makeup foundations
+    // units: Needs to be 593 since there are a total of 593 unique foundation shades
     // inputShape does not need to be defined for output.
     // activation: Softmax function acts like sigmoid except it also makes sure the resulting values add up to 1
     const outputLayer = tf.layers.dense({
-      units: 39,
+      units: 593,
       activation: 'softmax'
     });
     
@@ -114,7 +116,7 @@ export default class Train extends Component {
     // Create optimizer with stocastic gradient descent to minimize the loss with learning rate of 0.25
     const optimizer = tf.train.sgd(parseFloat(learningRate));
   
-    // Compile the model with the optimizer created above to reduce the loss. 
+    // Compile the model with the optimizer created above to reduce the loss.
     // Use loss function of categoricalCrossentropy, which is best for comparing two probability distributions
     model.compile({
       optimizer: optimizer,
@@ -147,8 +149,9 @@ export default class Train extends Component {
       }
     };
     
+    // Fit the data to the model, then console log the results
     return await model.fit(inputs, outputs, options)
-    .then(results => console.log('results', results.history.loss));
+    .then(results => console.log('results', results));
   };
   
   // Reset state to default values
@@ -200,7 +203,6 @@ export default class Train extends Component {
     this.setState({
       rgb
     });
-    console.log('rgb', rgb);
   };
   
   // Set state of the predicted foundation at the top level so it can be passed down to the Predict child component
@@ -208,7 +210,6 @@ export default class Train extends Component {
     this.setState({
       foundation
     });
-    console.log('foundation', foundation);
   }
 
   // Render training model results
